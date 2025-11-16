@@ -90,6 +90,7 @@
 				"Features/Colorized Ghostty Icon/ColorizedGhosttyIconImage.swift",
 				"Features/Colorized Ghostty Icon/ColorizedGhosttyIconView.swift",
 				"Features/Command Palette/CommandPalette.swift",
+				"Features/Command Palette/QuickSelectCommandPalette.swift",
 				"Features/Command Palette/TerminalCommandPalette.swift",
 				"Features/Global Keybinds/GlobalEventTap.swift",
 				Features/QuickTerminal/QuickTerminal.xib,

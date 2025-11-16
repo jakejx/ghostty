@@ -49,6 +49,8 @@ class BaseTerminalController: NSWindowController,
     /// This can be set to show/hide the command palette.
     @Published var commandPaletteIsShowing: Bool = false
     
+    @Published var quickSelectPaletteIsShowing: Bool = false
+    
     /// Set if the terminal view should show the update overlay.
     @Published var updateOverlayIsVisible: Bool = false
 
@@ -143,6 +145,12 @@ class BaseTerminalController: NSWindowController,
             selector: #selector(ghosttyCommandPaletteDidToggle(_:)),
             name: .ghosttyCommandPaletteDidToggle,
             object: nil)
+        center.addObserver(
+            self,
+            selector: #selector(ghosttyQuickSeletePaletteDidToggle(_:)),
+            name: .ghosttyQuickSelectPaletteDidToggle,
+            object: nil)
+        
         center.addObserver(
             self,
             selector: #selector(ghosttyMaximizeDidToggle(_:)),
@@ -510,6 +518,12 @@ class BaseTerminalController: NSWindowController,
         guard let surfaceView = notification.object as? Ghostty.SurfaceView else { return }
         guard surfaceTree.contains(surfaceView) else { return }
         toggleCommandPalette(nil)
+    }
+    
+    @objc private func ghosttyQuickSeletePaletteDidToggle(_ notification: Notification) {
+        guard let surfaceView = notification.object as? Ghostty.SurfaceView else { return }
+        guard surfaceTree.contains(surfaceView) else { return }
+        toggleQuickSelectPalette(nil)
     }
 
     @objc private func ghosttyMaximizeDidToggle(_ notification: Notification) {
@@ -1112,7 +1126,11 @@ class BaseTerminalController: NSWindowController,
     @IBAction func toggleCommandPalette(_ sender: Any?) {
         commandPaletteIsShowing.toggle()
     }
-
+    
+    @IBAction func toggleQuickSelectPalette(_ sender: Any?) {
+        quickSelectPaletteIsShowing.toggle()
+    }
+    
     @objc func resetTerminal(_ sender: Any) {
         guard let surface = focusedSurface?.surface else { return }
         ghostty.resetTerminal(surface: surface)

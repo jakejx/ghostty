@@ -567,6 +567,12 @@ fn actionCommands(action: Action.Key) []const Command {
             .description = "Toggle whether mouse events are reported to terminal applications.",
         }},
 
+        .toggle_quick_select_palette => comptime &.{.{
+            .action = .toggle_quick_select_palette,
+            .title = "Toggle Quick Select",
+            .description = "Toggle the quick select palette",
+        }},
+
         .check_for_updates => comptime &.{.{
             .action = .check_for_updates,
             .title = "Check for Updates",

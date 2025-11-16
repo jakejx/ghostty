@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="24123.1" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="23727" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="24123.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23727"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -39,6 +39,7 @@
                 <outlet property="menuPaste" destination="i27-pK-umN" id="ICc-X2-gV3"/>
                 <outlet property="menuPasteSelection" destination="akq-ov-Jjh" id="GS8-aQ-hVw"/>
                 <outlet property="menuPreviousSplit" destination="Lic-px-1wg" id="Rto-CG-yRe"/>
+                <outlet property="menuQuickSelectPalette" destination="1W7-F2-tP1" id="af1-U6-dbR"/>
                 <outlet property="menuQuickTerminal" destination="1pv-LF-NBJ" id="glN-5B-IGi"/>
                 <outlet property="menuQuit" destination="4sb-4s-VLi" id="qYN-S1-6UW"/>
                 <outlet property="menuRedo" destination="EX8-lB-4s7" id="wON-2J-yT1"/>
@@ -274,7 +275,13 @@
                             <menuItem title="Command Palette" id="et6-de-Mh7">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
-                                    <action selector="toggleCommandPalette:" target="-1" id="FcT-XD-gM1"/>
+                                    <action selector="toggleCommandPalette:" target="-1" id="quS-39-aFk"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Quick Select" id="1W7-F2-tP1">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="toggleQuickSelectPalette:" target="-1" id="QnT-CW-XZY"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Change Title..." id="24I-xg-qIq">

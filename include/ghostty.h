@@ -768,6 +768,7 @@ typedef enum {
   GHOSTTY_ACTION_TOGGLE_WINDOW_DECORATIONS,
   GHOSTTY_ACTION_TOGGLE_QUICK_TERMINAL,
   GHOSTTY_ACTION_TOGGLE_COMMAND_PALETTE,
+  GHOSTTY_ACTION_TOGGLE_QUICK_SELECT_PALETTE,
   GHOSTTY_ACTION_TOGGLE_VISIBILITY,
   GHOSTTY_ACTION_MOVE_TAB,
   GHOSTTY_ACTION_GOTO_TAB,
@@ -973,6 +974,8 @@ void ghostty_surface_set_color_scheme(ghostty_surface_t,
 ghostty_input_mods_e ghostty_surface_key_translation_mods(ghostty_surface_t,
                                                           ghostty_input_mods_e);
 void ghostty_surface_commands(ghostty_surface_t, ghostty_command_s**, size_t*);
+bool ghostty_quick_select_options(ghostty_surface_t, ghostty_string_s**, size_t*);
+void ghostty_quick_select_options_free(ghostty_surface_t, ghostty_string_s*, size_t);
 bool ghostty_surface_key(ghostty_surface_t, ghostty_input_key_s);
 bool ghostty_surface_key_is_binding(ghostty_surface_t, ghostty_input_key_s);
 void ghostty_surface_text(ghostty_surface_t, const char*, uintptr_t);

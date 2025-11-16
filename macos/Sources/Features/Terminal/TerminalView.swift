@@ -31,7 +31,10 @@ protocol TerminalViewModel: ObservableObject {
 
     /// The command palette state.
     var commandPaletteIsShowing: Bool { get set }
-    
+
+    /// The quick select palette state.
+    var quickSelectPaletteIsShowing: Bool { get set }
+
     /// The update overlay should be visible.
     var updateOverlayIsVisible: Bool { get }
 }
@@ -112,8 +115,10 @@ struct TerminalView<ViewModel: TerminalViewModel>: View {
                         updateViewModel: (NSApp.delegate as? AppDelegate)?.updateViewModel) { action in
                         self.delegate?.performAction(action, on: surfaceView)
                     }
+
+                    QuickSelectCommandPalette(surfaceView: surfaceView, isPresented: $viewModel.quickSelectPaletteIsShowing)
                 }
-                
+
                 // Show update information above all else.
                 if viewModel.updateOverlayIsVisible {
                     UpdateOverlay()
@@ -129,7 +134,7 @@ fileprivate struct UpdateOverlay: View {
         if let appDelegate = NSApp.delegate as? AppDelegate {
             VStack {
                 Spacer()
-                
+
                 HStack {
                     Spacer()
                     UpdatePill(model: appDelegate.updateViewModel)

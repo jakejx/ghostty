@@ -66,6 +66,7 @@ class AppDelegate: NSObject,
     @IBOutlet private var menuQuickTerminal: NSMenuItem?
     @IBOutlet private var menuTerminalInspector: NSMenuItem?
     @IBOutlet private var menuCommandPalette: NSMenuItem?
+    @IBOutlet private var menuQuickSelectPalette: NSMenuItem?
 
     @IBOutlet private var menuEqualizeSplits: NSMenuItem?
     @IBOutlet private var menuMoveSplitDividerUp: NSMenuItem?
@@ -605,6 +606,7 @@ class AppDelegate: NSObject,
         syncMenuShortcut(config, action: "toggle_window_float_on_top", menuItem: self.menuFloatOnTop)
         syncMenuShortcut(config, action: "inspector:toggle", menuItem: self.menuTerminalInspector)
         syncMenuShortcut(config, action: "toggle_command_palette", menuItem: self.menuCommandPalette)
+        syncMenuShortcut(config, action: "toggle_quick_select_palette", menuItem: self.menuQuickSelectPalette)
 
         syncMenuShortcut(config, action: "toggle_secure_input", menuItem: self.menuSecureInput)
 

@@ -6182,6 +6182,12 @@ pub const Keybinds = struct {
             .toggle_command_palette,
         );
 
+        try self.set.put(
+            alloc,
+            .{ .key = .{ .unicode = 'o' }, .mods = inputpkg.ctrlOrSuper(.{ .shift = true }) },
+            .toggle_quick_select_palette,
+        );
+
         // Mac-specific keyboard bindings.
         if (comptime builtin.target.os.tag.isDarwin()) {
             try self.set.put(

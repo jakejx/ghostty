@@ -658,6 +658,9 @@ pub const Action = union(enum) {
     /// version can be found by running `ghostty +version`.
     toggle_command_palette,
 
+    //// Activate quick select palette.
+    toggle_quick_select_palette,
+
     /// Toggle the quick terminal.
     ///
     /// The quick terminal, also known as the "Quake-style" or drop-down
@@ -1188,6 +1191,7 @@ pub const Action = union(enum) {
             .toggle_secure_input,
             .toggle_mouse_reporting,
             .toggle_command_palette,
+            .toggle_quick_select_palette,
             .show_on_screen_keyboard,
             .reset_window_size,
             .crash,

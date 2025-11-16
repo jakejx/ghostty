@@ -5169,6 +5169,12 @@ pub fn performBindingAction(self: *Surface, action: input.Binding.Action) !bool 
             .toggle_command_palette,
             {},
         ),
+        
+        .toggle_quick_select_palette => return try self.rt_app.performAction(
+            .{ .surface = self },
+            .toggle_quick_select_palette,
+            {},
+        ),
 
         .show_on_screen_keyboard => return try self.rt_app.performAction(
             .{ .surface = self },

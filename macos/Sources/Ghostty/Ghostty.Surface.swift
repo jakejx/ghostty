@@ -145,5 +145,20 @@ extension Ghostty {
             let buffer = UnsafeBufferPointer(start: ptr, count: count)
             return Array(buffer).map { Command(cValue: $0) }.filter { $0.isSupported }
         }
+        
+        @MainActor
+        func quickSelect() throws -> [String] {
+            var ptr: UnsafeMutablePointer<ghostty_string_s>? = nil
+            var count: Int = 0
+            if !ghostty_quick_select_options(surface, &ptr, &count) {
+                return []
+            }
+            guard let ptr else { throw Error.apiFailed }
+            let buffer = UnsafeBufferPointer(start: ptr, count: count)
+            let links =  Array(buffer).map { String(cString: $0.ptr) }
+            ghostty_quick_select_options_free(surface, ptr, count)
+            
+            return links;
+        }
     }
 }

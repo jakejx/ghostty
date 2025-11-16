@@ -20,6 +20,7 @@ const CoreInspector = @import("../inspector/main.zig").Inspector;
 const CoreSurface = @import("../Surface.zig");
 const configpkg = @import("../config.zig");
 const Config = configpkg.Config;
+const c = @import("../main_c.zig");
 
 const log = std.log.scoped(.embedded_window);
 
@@ -1715,6 +1716,77 @@ pub const CAPI = struct {
         const commands = input.command.defaultsC;
         out.* = commands.ptr;
         len.* = commands.len;
+    }
+
+    export fn ghostty_quick_select_options(
+        surface: *Surface,
+        out: *[*]const c.String,
+        len: *usize,
+    ) bool {
+        const alloc = surface.app.core_app.alloc;
+        const text = blk: {
+            surface.core_surface.renderer_state.mutex.lock();
+            defer surface.core_surface.renderer_state.mutex.unlock();
+
+            const term = surface.core_surface.renderer_state.terminal;
+            var screen = term.screens.active;
+            const start_pin = screen.pages.getTopLeft(.viewport);
+            const end_pin = screen.pages.getBottomRight(.viewport) orelse return false;
+            const sel = terminal.Selection.init(start_pin, end_pin, false);
+            break :blk screen.selectionString(alloc, .{ .sel = sel, .trim = true }) catch |err| {
+                log.warn("failed to get text err={}", .{err});
+                return false;
+            };
+        };
+        defer alloc.free(text);
+
+        const link_cfg = surface.core_surface.config.links;
+        var links_map = std.StringArrayHashMap(void).init(alloc);
+        defer links_map.deinit();
+
+        for (link_cfg) |*lc| {
+            var offset: usize = 0;
+            search: while (offset < text.len) {
+                var region = lc.regex.search(text[offset..], .{}) catch |err| switch (err) {
+                    error.Mismatch => break :search,
+                    else => continue :search,
+                };
+                defer region.deinit();
+
+                const start_rel: usize = @intCast(region.starts()[0]);
+                const end_rel: usize = @intCast(region.ends()[0]);
+                if (start_rel >= end_rel) {
+                    offset += 1;
+                    continue;
+                }
+
+                const start = offset + start_rel;
+                const end = offset + end_rel;
+                links_map.put(text[start..end], {}) catch return false;
+                offset += end_rel;
+            }
+        }
+
+        var links = alloc.alloc(c.String, links_map.count()) catch return false;
+        for (links_map.keys(), 0..) |key, i| {
+            const dup = alloc.dupe(u8, key) catch {
+                return false;
+            };
+            links[i] = c.String.fromSlice(dup);
+        }
+
+        out.* = links.ptr;
+        len.* = links.len;
+        return true;
+    }
+
+    export fn ghostty_quick_select_options_free(surface: *Surface, ptr: [*]const c.String, len: usize) void {
+        const alloc = surface.app.core_app.alloc;
+        const slice = ptr[0..len];
+        for (slice) |s| {
+            s.deinit();
+        }
+        alloc.free(slice);
     }
 
     /// Send this for raw keypresses (i.e. the keyDown event on macOS).
